@@ -168,8 +168,10 @@ $(VENDOR_SDK_DIR)/.dir: $(VENDOR_SDK_ZIP)
 
 sdk_patch: $(VENDOR_SDK_DIR)/.dir .sdk_patch_$(VENDOR_SDK)
 
-.sdk_patch_1.5.3:
+.sdk_patch_1.5.3: MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip
 	echo -e "#undef ESP_SDK_VERSION\n#define ESP_SDK_VERSION 010503" >>$(VENDOR_SDK_DIR)/include/esp_sdk_ver.h
+	$(UNZIP) MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip
+	mv liblwip.a libmain.a $(VENDOR_SDK_DIR_1.5.3)/lib/
 	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < c_types-c99.patch
 	cd $(VENDOR_SDK_DIR)/lib; mkdir -p tmp; cd tmp; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar x ../libcrypto.a; cd ..; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar rs libwpa.a tmp/*.o
 	@touch $@
@@ -365,6 +367,8 @@ libsmartconfig_2.4.2.zip:
 	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=585"
 lib_mem_optimize_150714.zip:
 	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=594"
+MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip:
+	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=1351"
 
 clean-sdk:
 	rm -rf $(VENDOR_SDK_DIR)
