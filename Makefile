@@ -207,8 +207,10 @@ $(VENDOR_SDK_DIR)/.dir: $(VENDOR_SDK_ZIP)
 
 sdk_patch: $(VENDOR_SDK_DIR)/.dir .sdk_patch_$(VENDOR_SDK)
 
-.sdk_patch_1.5.3:
+.sdk_patch_1.5.3: MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip
 	echo -e "#undef ESP_SDK_VERSION\n#define ESP_SDK_VERSION 010503" >>$(VENDOR_SDK_DIR)/include/esp_sdk_ver.h
+	$(UNZIP) MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip
+	mv liblwip.a libmain.a $(VENDOR_SDK_DIR_1.5.3)/lib/
 	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < c_types-c99.patch
 	cp -f $(VENDOR_SDK_DIR)/ld/eagle.app.v6.ld $(VENDOR_SDK_DIR)/ld/eagle.app.v6.irom.ld
 	cp -f $(VENDOR_SDK_DIR)/ld/eagle.app.v6.new.2048.ld $(VENDOR_SDK_DIR)/ld/eagle.app.v6.new.2048.irom.ld
@@ -414,6 +416,8 @@ lib_mem_optimize_150714.zip:
 	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=594"
 Patch01_for_ESP8266_NONOS_SDK_V1.zip:
 	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=1168"
+MDNS_Patch_ESP8266_NONOS_SDK_V1.5.3.zip:
+	wget --content-disposition "http://bbs.espressif.com/download/file.php?id=1351"
 
 clean-sdk:
 	rm -rf $(VENDOR_SDK_DIR)
