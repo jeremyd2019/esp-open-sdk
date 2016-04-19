@@ -158,7 +158,7 @@ _libhal:
 
 
 
-sdk: $(VENDOR_SDK_DIR)/.dir
+sdk: $(VENDOR_SDK_DIR)/.dir sdk_patch
 	ln -snf $(VENDOR_SDK_DIR) sdk
 
 $(VENDOR_SDK_DIR)/.dir: $(VENDOR_SDK_ZIP)
