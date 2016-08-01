@@ -226,6 +226,9 @@ sdk_patch: $(VENDOR_SDK_DIR)/.dir .sdk_patch_$(VENDOR_SDK)
 .sdk_patch_2.0.0: user_rf_cal_sector_set.o
 	echo -e "#undef ESP_SDK_VERSION\n#define ESP_SDK_VERSION 020000" >>$(VENDOR_SDK_DIR)/include/esp_sdk_ver.h
 	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < c_types-c99_sdk_2.patch
+	cp -f $(VENDOR_SDK_DIR)/ld/eagle.app.v6.ld $(VENDOR_SDK_DIR)/ld/eagle.app.v6.irom.ld
+	cp -f $(VENDOR_SDK_DIR)/ld/eagle.app.v6.new.2048.ld $(VENDOR_SDK_DIR)/ld/eagle.app.v6.new.2048.irom.ld
+	$(PATCH) -d $(VENDOR_SDK_DIR) -p1 < ld-script-irom_2.patch
 	cd $(VENDOR_SDK_DIR)/lib; mkdir -p tmp; cd tmp; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar x ../libcrypto.a; cd ..; $(TOOLCHAIN)/bin/xtensa-lx106-elf-ar rs libwpa.a tmp/*.o
 	$(TOOLCHAIN)/bin/xtensa-lx106-elf-ar r $(VENDOR_SDK_DIR)/lib/libmain.a user_rf_cal_sector_set.o
 	@touch $@
